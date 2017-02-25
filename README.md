@@ -1,0 +1,1 @@
+Redis Map: an object for accessing Redis hashmaps
