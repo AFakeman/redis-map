@@ -27,7 +27,11 @@ class RedisMap:
 
     def __iter__(self):
         conn = redis.StrictRedis(connection_pool=self.conn_pool)
-        return conn.hgetall(self.name).__iter__
+        return conn.hgetall(self.name).__iter__()
+
+    def __delitem__(self, key):
+        conn = redis.StrictRedis(connection_pool=self.conn_pool)
+        conn.hdel(self.name, key)
 
     def items(self):
         conn = redis.StrictRedis(connection_pool=self.conn_pool)
