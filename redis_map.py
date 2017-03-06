@@ -2,16 +2,20 @@ import redis
 
 
 class RedisMap:
-    def __init__(self, host=None, port=None, name=None, conn_pool=None, db=0):
+    def __init__(self, host=None, port=None, name=None, conn_pool=None, db=0, autodecode=None):
         if not conn_pool:
             self.conn_pool = redis.ConnectionPool(host=host, port=port, db=db)
         else:
             self.conn_pool = conn_pool
         self.name = name
+        self.decode = autodecode
 
     def __getitem__(self, item):
         conn = redis.StrictRedis(connection_pool=self.conn_pool)
-        return conn.hget(self.name, item)
+        if self.decode:
+            return conn.hget(self.name, item).decode(self.decode)
+        else:
+            return conn.hget(self.name, item)
 
     def __setitem__(self, key, value):
         conn = redis.StrictRedis(connection_pool=self.conn_pool)

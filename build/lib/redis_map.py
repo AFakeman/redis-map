@@ -1,6 +1,5 @@
 import redis
 
-
 class RedisMap:
     def __init__(self, host=None, port=None, name=None, conn_pool=None, db=0):
         if not conn_pool:
